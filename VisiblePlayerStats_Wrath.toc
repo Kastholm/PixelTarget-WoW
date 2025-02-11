@@ -1,0 +1,5 @@
+## Interface: 30403
+## Title: VisiblePlayerStats
+## Notes: Nothing to be done.
+## Version: 1.0.0
+core.lua
