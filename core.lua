@@ -21,7 +21,7 @@ end)
 
 local hpBar = CreateFrame("StatusBar", nil, frame)
 hpBar:SetPoint("LEFT", frame, "LEFT", 10, 0)
-hpBar:SetSize(100, 20)
+hpBar:SetSize(100, 50)
 hpBar:SetStatusBarTexture("Interface\\Buttons\\WHITE8X8")
 hpBar:SetStatusBarColor(0, 1, 0, 1)
 hpBar:SetMinMaxValues(0, 100)
@@ -29,7 +29,7 @@ hpBar:SetValue(100)
 
 local manaBar = CreateFrame("StatusBar", nil, frame)
 manaBar:SetPoint("LEFT", hpBar, "RIGHT", 30, 0)
-manaBar:SetSize(100, 20)
+manaBar:SetSize(100, 50)
 manaBar:SetStatusBarTexture("Interface\\Buttons\\WHITE8X8")
 manaBar:SetStatusBarColor(0, 0.8, 1, 1)
 manaBar:SetMinMaxValues(0, 100)
@@ -57,11 +57,11 @@ end)
 
 -- Combat-indikator bar
 local combatBar = CreateFrame("Frame", nil, frame)
-combatBar:SetSize(50, 20)  -- Juster størrelse efter behov
+combatBar:SetSize(80, 50)  -- Juster størrelse efter behov
 combatBar:SetPoint("LEFT", manaBar, "RIGHT", 30, 0)
 combatBar.texture = combatBar:CreateTexture(nil, "BACKGROUND")
 combatBar.texture:SetAllPoints(combatBar)
-combatBar.texture:SetColorTexture(1, 1, 1, 1)  -- Hvid som default
+combatBar.texture:SetColorTexture(0, 0, 0, 0)  -- Sort som default
 
 -- Registrér combat events
 frame:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -72,7 +72,7 @@ frame:HookScript("OnEvent", function(self, event)
     if event == "PLAYER_REGEN_DISABLED" then
         combatBar.texture:SetColorTexture(1, 0, 0, 1)  -- Rød i combat
     elseif event == "PLAYER_REGEN_ENABLED" then
-        combatBar.texture:SetColorTexture(1, 1, 1, 1)  -- Hvid uden combat
+        combatBar.texture:SetColorTexture(0, 0, 0, 0)  -- Sort uden combat
     end
 end)
 
