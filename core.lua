@@ -41,38 +41,27 @@ frame:RegisterEvent("UNIT_HEALTH")
 frame:RegisterEvent("UNIT_MAXHEALTH")
 frame:RegisterEvent("UNIT_MAXPOWER")
 
--- Event handler
-frame:SetScript("OnEvent", function(self, event, unit)
-  if unit ~= "player" then return end -- Only update for the player
-
-  if event == "UNIT_HEALTH" then
-    local cur = UnitHealth("player")
-    local max = UnitHealthMax("player")
-    hpBar:SetMinMaxValues(0, max)
-    hpBar:SetValue(cur)
-
-  end
-end)
 
 
 -- Combat-indikator bar
 local combatBar = CreateFrame("Frame", nil, frame)
-combatBar:SetSize(80, 50)  -- Juster størrelse efter behov
+combatBar:SetSize(80, 50)
 combatBar:SetPoint("LEFT", manaBar, "RIGHT", 30, 0)
 combatBar.texture = combatBar:CreateTexture(nil, "BACKGROUND")
 combatBar.texture:SetAllPoints(combatBar)
-combatBar.texture:SetColorTexture(0, 0, 0, 0)  -- Sort som default
+combatBar.texture:SetColorTexture(0, 0, 0, 0) -- Hvid som default
 
--- Registrér combat events
-frame:RegisterEvent("PLAYER_REGEN_DISABLED")
-frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+-- Opret en separat frame til combat events
+local combatFrame = CreateFrame("Frame")
+combatFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+combatFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 
--- Håndter combat events
-frame:HookScript("OnEvent", function(self, event)
+-- Combat event handler
+combatFrame:SetScript("OnEvent", function(self, event)
     if event == "PLAYER_REGEN_DISABLED" then
-        combatBar.texture:SetColorTexture(1, 0, 0, 1)  -- Rød i combat
+        combatBar.texture:SetColorTexture(1, 0, 0, 1) -- Rød i combat
     elseif event == "PLAYER_REGEN_ENABLED" then
-        combatBar.texture:SetColorTexture(0, 0, 0, 0)  -- Sort uden combat
+        combatBar.texture:SetColorTexture(0, 0, 0, 0) -- Hvid uden combat
     end
 end)
 
@@ -93,6 +82,8 @@ CoordinatesText:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
 CoordinatesText:SetTextColor(1, 0, 1)
 CoordinatesText:SetSize(150,10)
 
+
+-- UPDATE VALUES
 frame:SetScript("OnUpdate", function(self, elapsed)
     local zone = GetZoneText() or "Ukendt"
     local subzone = GetSubZoneText() or "Ukendt"
@@ -108,6 +99,11 @@ frame:SetScript("OnUpdate", function(self, elapsed)
     local max = UnitPowerMax("player", 0) -- Get max mana
     manaBar:SetMinMaxValues(0, max)
     manaBar:SetValue(cur)
+
+    local cur = UnitHealth("player")
+    local max = UnitHealthMax("player")
+    hpBar:SetMinMaxValues(0, max)
+    hpBar:SetValue(cur)
 end)
 
 -- Target
