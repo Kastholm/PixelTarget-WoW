@@ -112,9 +112,34 @@ end)
 
 -- Target
 
+local hpBarTarget = CreateFrame("StatusBar", nil, frame)
+hpBarTarget:SetPoint("LEFT", CoordinatesText, "RIGHT", 30, 0)
+hpBarTarget:SetSize(100, 50)
+hpBarTarget:SetStatusBarTexture("Interface\\Buttons\\WHITE8X8")
+hpBarTarget:SetStatusBarColor(0, 1, 0, 1)
+hpBarTarget:SetMinMaxValues(0, 100)
+hpBarTarget:SetValue(100)
+
+frame:RegisterEvent("PLAYER_TARGET_CHANGED")
+-- Event handler
+frame:SetScript("OnEvent", function(self, event, unit)
+    -- Opdater kun, hvis event er "UNIT_HEALTH" og unit er "target", ELLER hvis event er "PLAYER_TARGET_CHANGED"
+    if (event == "UNIT_HEALTH" and unit == "target") or event == "PLAYER_TARGET_CHANGED" then
+        if UnitExists("target") then -- Tjek om der er et target
+            local cur = UnitHealth("target")
+            local max = UnitHealthMax("target")
+            hpBarTarget:SetMinMaxValues(0, max)
+            hpBarTarget:SetValue(cur)
+            hpBarTarget:Show()
+        else -- Hvis der ikke er et target, skjul HP-baren
+            hpBarTarget:Hide()
+        end
+    end
+end)
+
 -- Target Level
 local TargetLevelText = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-TargetLevelText:SetPoint("LEFT", CoordinatesText, "RIGHT", 30, 0)
+TargetLevelText:SetPoint("LEFT", hpBarTarget, "RIGHT", 30, 0)
 TargetLevelText:SetFont("Fonts\\FRIZQT__.TTF", 22, "OUTLINE")
 TargetLevelText:SetTextColor(1, 1, 0)  -- gul tekst
 TargetLevelText:SetSize(50,30)
