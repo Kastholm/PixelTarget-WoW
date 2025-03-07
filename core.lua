@@ -93,7 +93,7 @@ frame:SetScript("OnUpdate", function(self, elapsed)
     local x, y = position:GetXY()
     LevelText:SetText(level)
     ZoneText:SetText(zone.."  /  "..subzone)
-    CoordinatesText:SetText(string.format("%.3f %.3f", x*100, y*100))
+    CoordinatesText:SetText(string.format("%.2f %.2f", x*100, y*100))
 
     local cur = UnitPower("player", 0) -- Get current mana
     local max = UnitPowerMax("player", 0) -- Get max mana
@@ -162,7 +162,7 @@ targetText:SetText("No Target")
 
 -- Target indikator (10x10 pixels)
 local targetIndicator = CreateFrame("Frame", nil, frame)
-targetIndicator:SetSize(30, 30)
+targetIndicator:SetSize(50, 50)
 targetIndicator:SetPoint("LEFT", targetText, "RIGHT", 5, 0)
 targetIndicator.texture = targetIndicator:CreateTexture(nil, "BACKGROUND")
 targetIndicator.texture:SetAllPoints(targetIndicator)
@@ -175,7 +175,7 @@ frame:HookScript("OnEvent", function(self, event)
         if tName then
             targetText:SetText(tName)
             if UnitIsDead("target") then
-                targetIndicator.texture:SetColorTexture(1, 0, 1)  -- grå, hvis død
+                targetIndicator.texture:SetColorTexture(1, 0, 1) 
             else
                 local reaction = UnitReaction("target", "player")
                 if reaction then
